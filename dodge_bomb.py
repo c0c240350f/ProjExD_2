@@ -28,7 +28,7 @@ def check_bound(rct:pg.Rect) -> tuple[bool,bool]:
         tate=False
     return yoko,tate
 
-def gameover(screen: pg.Surface) -> None:
+def gameover(screen: pg.Surface) -> None: #issue
     go_img=pg.Surface((1100,650))
     pg.draw.rect(go_img,(0,0,0),(0,0,1100,650))
     go_img.set_alpha(150)

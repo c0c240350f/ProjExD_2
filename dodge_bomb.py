@@ -1,6 +1,7 @@
 import os
 import sys
 import random
+import time
 import pygame as pg
 
 
@@ -27,6 +28,28 @@ def check_bound(rct:pg.Rect) -> tuple[bool,bool]:
         tate=False
     return yoko,tate
 
+def gameover(screen: pg.Surface) -> None:
+    go_img=pg.Surface((1100,650))
+    pg.draw.rect(go_img,(0,0,0),(0,0,1100,650))
+    go_img.set_alpha(150)
+    fonto=pg.font.Font(None,80)
+    txt=fonto.render("Game Over",True,(255,255,255))
+    txt_rect=txt.get_rect()
+    txt_rect.center=WIDTH/2,HEIGHT/2
+    screen.blit(txt, txt_rect)
+    ck_img=pg.transform.rotozoom(pg.image.load("fig/8.png"),0,0.9)
+    ck_rect=ck_img.get_rect()
+    ck_rect.center=WIDTH/2-200,HEIGHT/2
+    screen.blit(ck_img,ck_rect)
+    ck_rect.center=WIDTH/2+200,HEIGHT/2
+    screen.blit(ck_img,ck_rect)
+    screen.blit(go_img,[0,0])
+    pg.display.update()
+    time.sleep(5)
+
+
+
+
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -45,6 +68,18 @@ def main():
 
     clock = pg.time.Clock()
     tmr = 0
+
+# def init_bb_imgs() -> tuple[list[pg.surface],list[int]]:
+#     bb_imgs=[a for a in range(1,11)]
+#     bb_accs=[a for a in range(1,11)]
+#     for r in range(1,11):
+#         bb_img=pg.surface((20*r,20*r))
+#         pg.draw.circle(bb_img,(255,0,0),(10*r,10*r),10*r)
+#         bb_imgs.append(bb_img)
+#         return bb_imgs,bb_accs
+#     avx=vx*bb_accs[min(tmr//500,9)]
+#     bb_img=bb_imgs[min(tmr//500,9)]
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
@@ -52,7 +87,8 @@ def main():
         
         if kk_rct.colliderect(bb_rct): #こうかとんと爆弾が衝突したら
             print("ゲームオーバー")
-            return
+            gameover(screen)
+            return 
 
         screen.blit(bg_img, [0, 0]) 
 
